@@ -11,7 +11,11 @@ const pool = createPool({ applicationName: 'hearth-seed' });
 try {
   await withTransaction(pool, async (client) => {
     for (const entry of document.entries) {
-      const embeddingStatus = entry.sealed || entry.type === 'rule' ? 'not_required' : 'pending';
+      const embeddingStatus = !entry.sealed
+        && entry.status === 'active'
+        && ['event', 'project', 'letter', 'stream'].includes(entry.type)
+        ? 'pending'
+        : 'not_required';
       await client.query(`
         UPSERT INTO hearth_entries (
           id, scope_id, language, type, keys, hook, body, trigger_date, trigger_done,
@@ -22,9 +26,9 @@ try {
           embedding_claimed_at, embedding_claim_token, embedding_next_retry_at
         ) VALUES (
           $1, 'demo_public', $2, $3, $4::JSONB, $5, $6, $7, $8,
-          $9, $10, $11, $12, $13, $14,
-          $15, $16, $17, $18,
-          NULL, NULL, NULL, $19,
+          $9, $10, $11, $12, $13, NULL,
+          $14, $15, $16, $17,
+          NULL, NULL, NULL, $18,
           NULL, NULL, 0, NULL, NULL, NULL
         )
       `, [
@@ -41,13 +45,24 @@ try {
         entry.tier_since,
         entry.last_accessed,
         entry.status,
-        entry.supersedes ?? null,
         entry.created_at,
         entry.updated_at,
         entry.expires_at ?? null,
         contentHash(entry),
         embeddingStatus,
       ]);
+    }
+
+    // Relation targets are not guaranteed to appear before their replacements
+    // in the editorial file. Link them only after every entry exists so the
+    // self-referencing foreign key remains valid regardless of file order.
+    for (const entry of document.entries) {
+      if (!entry.supersedes) continue;
+      await client.query(`
+        UPDATE hearth_entries
+        SET supersedes = $2
+        WHERE id = $1 AND scope_id = 'demo_public'
+      `, [entry.id, entry.supersedes]);
     }
   });
   process.stdout.write(`Seeded ${document.entries.length} fictional entries into demo_public.\n`);

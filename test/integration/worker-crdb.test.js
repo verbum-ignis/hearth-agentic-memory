@@ -117,3 +117,17 @@ test('a stale embedding cannot overwrite changed content', { skip: !enabled }, a
     await pool.end();
   }
 });
+
+test('worker cannot claim a non-active entry even if its queue state is pending', { skip: !enabled }, async () => {
+  const pool = createPool({ applicationName: 'hearth-worker-eligibility-test' });
+  try {
+    await pool.query(`DELETE FROM hearth_entries WHERE scope_id = 'integration_worker'`);
+    await insertPending(pool, pendingEntry('worker_retired_entry'));
+    await pool.query(`UPDATE hearth_entries SET status = 'retired' WHERE id = 'worker_retired_entry'`);
+    const claimed = await claimNext(pool, { scopeId: 'integration_worker' });
+    assert.equal(claimed, null);
+  } finally {
+    await pool.query(`DELETE FROM hearth_entries WHERE scope_id = 'integration_worker'`).catch(() => {});
+    await pool.end();
+  }
+});

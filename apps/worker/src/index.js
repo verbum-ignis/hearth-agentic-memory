@@ -1,4 +1,5 @@
 import { createPool } from '../../../packages/db/src/pool.js';
+import { createCohereProvider } from './providers/cohere.js';
 import { fixtureProvider } from './providers/fixture.js';
 import { processOne } from './worker.js';
 
@@ -8,15 +9,19 @@ const leaseMs = Number(process.env.WORKER_LEASE_MS ?? 60_000);
 const maxAttempts = Number(process.env.WORKER_MAX_ATTEMPTS ?? 5);
 const providerName = process.env.EMBEDDING_PROVIDER ?? 'fixture';
 
-if (providerName !== 'fixture') {
-  throw new Error(`Provider ${providerName} is not implemented before the Day 0 model gate`);
-}
+const provider = providerName === 'fixture'
+  ? fixtureProvider
+  : providerName === 'cohere'
+    ? createCohereProvider()
+    : null;
+
+if (!provider) throw new Error(`Unknown embedding provider: ${providerName}`);
 
 const pool = createPool({ applicationName: process.env.WORKER_ID ?? 'hearth-worker' });
 
 try {
   do {
-    const result = await processOne(pool, fixtureProvider, { leaseMs, maxAttempts });
+    const result = await processOne(pool, provider, { leaseMs, maxAttempts });
     process.stdout.write(`${JSON.stringify(result)}\n`);
     if (once) break;
     if (result.status === 'idle') {

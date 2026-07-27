@@ -3,7 +3,8 @@ import { withTransaction } from '../../../packages/db/src/pool.js';
 
 const CLAIMABLE = `
   sealed = false
-  AND type != 'rule'
+  AND status = 'active'
+  AND type IN ('event', 'project', 'letter', 'stream')
   AND embedding_attempts < $4
   AND ($5::STRING IS NULL OR scope_id = $5)
   AND (
@@ -70,7 +71,8 @@ export async function completeClaim(pool, job, {
       AND embedding_claim_token = $2
       AND content_hash = $3
       AND sealed = false
-      AND type != 'rule'
+      AND status = 'active'
+      AND type IN ('event', 'project', 'letter', 'stream')
     RETURNING id
   `, [job.id, job.embedding_claim_token, job.content_hash, embedding, model, specVersion, now]);
   return result.rowCount === 1 ? { status: 'ready', id: job.id } : { status: 'stale', id: job.id };

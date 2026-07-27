@@ -13,6 +13,13 @@ export function canonicalEmbeddingText(entry) {
   ].join('\n').normalize('NFKC').replace(/[ \t]+/gu, ' ').trim();
 }
 
+export function canonicalQueryText(query) {
+  if (typeof query !== 'string') throw new TypeError('Embedding query must be a string');
+  const normalized = query.normalize('NFKC').replace(/[ \t]+/gu, ' ').trim();
+  if (!normalized) throw new TypeError('Embedding query must not be empty');
+  return normalized;
+}
+
 export function contentHash(entry) {
   return createHash('sha256').update(canonicalEmbeddingText(entry), 'utf8').digest('hex');
 }
