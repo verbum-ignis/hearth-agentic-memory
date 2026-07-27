@@ -71,6 +71,9 @@ export function validateDemoData(document, { allowPartial = false } = {}) {
     if (entry.tier > 0 && !isDate(entry.tier_since)) errors.push(`${label}: tier_since required for tier > 0`);
     if (entry.sealed && entry.expected_eligibility) errors.push(`${label}: sealed entry cannot be eligible`);
     if (entry.type === 'rule' && entry.expected_eligibility) errors.push(`${label}: rule cannot be recall-eligible`);
+    if (entry.retrieval === 'distractor' && !entry.expected_eligibility) {
+      errors.push(`${label}: distractor must remain recall-eligible so negative retrieval is meaningful`);
+    }
     const calculatedBand = bandForEntry(entry, asOf);
     if (entry.expected_band !== calculatedBand) {
       errors.push(`${label}: expected_band=${entry.expected_band}, calculated=${calculatedBand} at ${document.band_as_of}`);

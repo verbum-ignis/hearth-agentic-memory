@@ -18,3 +18,12 @@ test('sealed leakage and time-derived band mismatches fail validation', async ()
   assert.match(result.errors.join('\n'), /sealed entry cannot be eligible/u);
   assert.match(result.errors.join('\n'), /calculated=half_sunk/u);
 });
+
+test('an ineligible distractor cannot make negative retrieval pass for free', async () => {
+  const document = await loadDemoData('data/demo-sample.json');
+  document.entries[0].retrieval = 'distractor';
+  document.entries[0].expected_eligibility = false;
+  const result = validateDemoData(document, { allowPartial: true });
+  assert.equal(result.ok, false);
+  assert.match(result.errors.join('\n'), /distractor must remain recall-eligible/u);
+});
