@@ -1,6 +1,7 @@
 import { createPool } from '../../../packages/db/src/pool.js';
 import { createCohereProvider } from './providers/cohere.js';
 import { fixtureProvider } from './providers/fixture.js';
+import { createJinaProvider } from './providers/jina.js';
 import { processOne } from './worker.js';
 
 const once = process.argv.includes('--once');
@@ -11,6 +12,8 @@ const providerName = process.env.EMBEDDING_PROVIDER ?? 'fixture';
 
 const provider = providerName === 'fixture'
   ? fixtureProvider
+  : providerName === 'jina'
+    ? createJinaProvider()
   : providerName === 'cohere'
     ? createCohereProvider()
     : null;
