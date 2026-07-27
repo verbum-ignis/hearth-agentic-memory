@@ -20,7 +20,7 @@ test('sample seed preserves sealed upstream isolation', { skip: !enabled }, asyn
       embedding_status: 'not_required',
     });
     const calls = await pool.query(`SELECT count(*)::INT AS count FROM hearth_provider_calls WHERE entry_id = 'demo_046'`);
-    assert.equal(calls.rows[0].count, 0);
+    assert.equal(Number(calls.rows[0].count), 0);
   } finally {
     await pool.end();
   }

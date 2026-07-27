@@ -5,14 +5,14 @@ import { fixtureEmbedding, vectorLiteral } from '../packages/core/src/embedding.
 
 const pool = createPool({ applicationName: 'hearth-vector-smoke' });
 const queryVector = vectorLiteral(fixtureEmbedding('the box that never arrived'));
-const scopes = ['smoke_a', 'smoke_b'];
+const scopes = ['smoke_a'];
 
 try {
   await pool.query(`DELETE FROM hearth_entries WHERE scope_id = ANY($1::STRING[])`, [scopes]);
   for (let i = 0; i < 80; i += 1) {
-    const scope = scopes[i % scopes.length];
+    const scope = scopes[0];
     const id = `vector_smoke_${String(i).padStart(3, '0')}`;
-    const text = i === 7 ? 'the box that never arrived' : `unrelated fixture memory ${i}`;
+    const text = i === 8 ? 'the box that never arrived' : `unrelated fixture memory ${i}`;
     const vector = vectorLiteral(fixtureEmbedding(text));
     await pool.query(`
       INSERT INTO hearth_entries (
@@ -30,8 +30,8 @@ try {
 
   const query = `
     SELECT id, scope_id, embedding <=> $1::VECTOR AS distance
-    FROM hearth_entries
-    WHERE scope_id IN ('smoke_a', 'smoke_b') AND embedding IS NOT NULL
+    FROM hearth_entries@{FORCE_INDEX=hearth_entries_scope_embedding_idx}
+    WHERE scope_id = 'smoke_a'
     ORDER BY embedding <=> $1::VECTOR
     LIMIT 3
   `;
@@ -39,11 +39,19 @@ try {
   const result = await pool.query(query, [queryVector]);
   const version = await pool.query('SELECT version() AS version');
   const setting = await pool.query(`SHOW CLUSTER SETTING feature.vector_index.enabled`);
-  const plan = explain.rows.map((row) => Object.values(row).join(' ')).join('\n');
-  if (!/hearth_entries_scope_embedding_idx|vector|cspann/iu.test(plan)) {
+  const indexes = await pool.query(`SHOW INDEXES FROM hearth_entries`);
+  const vectorIndex = indexes.rows.find((row) => row.index_name === 'hearth_entries_scope_embedding_idx');
+  if (!vectorIndex) {
+    throw new Error('Vector index is missing from SHOW INDEXES');
+  }
+  const plan = explain.rows
+    .map((row) => Object.values(row).join(' '))
+    .join('\n')
+    .replace(/'\[[^\]]+\]'/gu, "'[VECTOR_1024]'");
+  if (!/hearth_entries_scope_embedding_idx|cspann/iu.test(plan)) {
     throw new Error(`Vector index was not visible in EXPLAIN plan:\n${plan}`);
   }
-  if (result.rows[0]?.id !== 'vector_smoke_007') {
+  if (result.rows[0]?.id !== 'vector_smoke_008') {
     throw new Error(`Unexpected nearest result: ${JSON.stringify(result.rows[0])}`);
   }
 
@@ -51,6 +59,7 @@ try {
     `captured_at=${new Date().toISOString()}`,
     `version=${version.rows[0].version}`,
     `feature.vector_index.enabled=${Object.values(setting.rows[0]).join(' ')}`,
+    `vector_index=${vectorIndex.index_name}`,
     '',
     'query_results=',
     JSON.stringify(result.rows, null, 2),

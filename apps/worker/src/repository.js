@@ -5,6 +5,7 @@ const CLAIMABLE = `
   sealed = false
   AND type != 'rule'
   AND embedding_attempts < $4
+  AND ($5::STRING IS NULL OR scope_id = $5)
   AND (
     (embedding_status IN ('pending', 'failed')
       AND (embedding_next_retry_at IS NULL OR embedding_next_retry_at <= $1))
@@ -17,6 +18,7 @@ export async function claimNext(pool, {
   now = new Date(),
   leaseMs = 60_000,
   maxAttempts = 5,
+  scopeId = null,
 } = {}) {
   const leaseCutoff = new Date(now.getTime() - leaseMs);
   const claimToken = randomUUID();
@@ -40,8 +42,9 @@ export async function claimNext(pool, {
       AND ${CLAIMABLE}
       RETURNING id, scope_id, type, keys, hook, body, content_hash,
                 embedding_attempts, embedding_claim_token
-    `, [now, leaseCutoff, claimToken, maxAttempts]);
-    return result.rows[0] ?? null;
+    `, [now, leaseCutoff, claimToken, maxAttempts, scopeId]);
+    const job = result.rows[0];
+    return job ? { ...job, embedding_attempts: Number(job.embedding_attempts) } : null;
   });
 }
 

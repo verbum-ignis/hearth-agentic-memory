@@ -52,7 +52,10 @@ test('two workers never commit the same claim', { skip: !enabled }, async () => 
     await pool.query(`DELETE FROM hearth_entries WHERE scope_id = 'integration_worker'`);
     await insertPending(pool, pendingEntry('worker_parallel_a'));
     await insertPending(pool, pendingEntry('worker_parallel_b'));
-    const [a, b] = await Promise.all([claimNext(pool), claimNext(pool)]);
+    const [a, b] = await Promise.all([
+      claimNext(pool, { scopeId: 'integration_worker' }),
+      claimNext(pool, { scopeId: 'integration_worker' }),
+    ]);
     assert.ok(a);
     assert.ok(b);
     assert.notEqual(a.id, b.id);
@@ -74,7 +77,7 @@ test('an expired processing lease is reclaimed', { skip: !enabled }, async () =>
       embedding_claimed_at: oldClaimedAt,
       embedding_claim_token: 'abandoned-token',
     });
-    const reclaimed = await claimNext(pool, { leaseMs: 60_000 });
+    const reclaimed = await claimNext(pool, { leaseMs: 60_000, scopeId: 'integration_worker' });
     assert.equal(reclaimed.id, 'worker_expired_lease');
     assert.equal(reclaimed.embedding_attempts, 2);
     assert.notEqual(reclaimed.embedding_claim_token, 'abandoned-token');
@@ -89,7 +92,7 @@ test('a stale embedding cannot overwrite changed content', { skip: !enabled }, a
   try {
     await pool.query(`DELETE FROM hearth_entries WHERE scope_id = 'integration_worker'`);
     await insertPending(pool, pendingEntry('worker_stale_content'));
-    const claimed = await claimNext(pool);
+    const claimed = await claimNext(pool, { scopeId: 'integration_worker' });
     await pool.query(`
       UPDATE hearth_entries
       SET body = 'Body changed while provider was running',
