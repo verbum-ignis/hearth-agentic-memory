@@ -1,0 +1,10 @@
+node_modules/
+.env
+.tools/
+.cache/
+coverage/
+dist/
+*.log
+cockroach-data/
+docs/evidence/*.actual.txt
+!docs/evidence/.gitkeep

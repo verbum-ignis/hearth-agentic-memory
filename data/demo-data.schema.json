@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hearth.example/schema/demo-data-v1.json",
+  "title": "Hearth fictional demo data",
+  "type": "object",
+  "required": ["schema_version", "band_as_of", "entries"],
+  "properties": {
+    "schema_version": { "const": "hearth-demo-v1" },
+    "band_as_of": { "type": "string", "format": "date-time" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "demo_group", "language", "eval_groups", "type", "tier",
+          "expected_band", "status", "sealed", "retrieval", "relation",
+          "expected_eligibility", "occurred_at", "created_at", "updated_at",
+          "last_accessed", "tier_since", "hook", "keys", "body"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^demo_[0-9]{3}$" },
+          "demo_group": { "enum": ["en", "zh", "cross"] },
+          "language": { "enum": ["en", "zh"] },
+          "eval_groups": {
+            "type": "array",
+            "items": { "enum": ["en", "zh", "cross"] },
+            "uniqueItems": true,
+            "minItems": 1
+          },
+          "type": { "enum": ["rule", "letter", "event", "project", "stream"] },
+          "tier": { "type": "integer", "minimum": 0, "maximum": 3 },
+          "expected_band": { "enum": ["active", "glimmer", "beacon", "anchor", "half_sunk", "deep", "nebula"] },
+          "status": { "enum": ["active", "superseded", "retired", "archived"] },
+          "sealed": { "type": "boolean" },
+          "retrieval": { "enum": ["easy", "paraphrase", "emotional", "ambiguous", "distractor"] },
+          "relation": { "enum": ["unique", "confusable", "superseding"] },
+          "expected_eligibility": { "type": "boolean" },
+          "occurred_at": { "type": "string", "format": "date-time" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "last_accessed": { "type": "string", "format": "date-time" },
+          "tier_since": { "type": ["string", "null"], "format": "date-time" },
+          "expires_at": { "type": ["string", "null"], "format": "date-time" },
+          "trigger_date": { "type": ["string", "null"], "format": "date" },
+          "trigger_done": { "type": "boolean" },
+          "supersedes": { "type": ["string", "null"] },
+          "hook": { "type": "string", "minLength": 1 },
+          "keys": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "body": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

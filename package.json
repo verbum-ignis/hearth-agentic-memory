@@ -1,0 +1,26 @@
+{
+  "name": "hearth-hackathon",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Hearth hackathon demo: a save point for agent memory.",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\"",
+    "test:unit": "node --test \"test/unit/*.test.js\"",
+    "test:integration": "node --test \"test/integration/*.test.js\"",
+    "db:migrate": "node scripts/migrate.js",
+    "db:smoke": "node scripts/vector-smoke.js",
+    "seed": "node scripts/seed.js",
+    "seed:sample": "node scripts/seed.js data/demo-sample.json",
+    "validate:seed": "node scripts/validate-seed.js",
+    "validate:sample": "node scripts/validate-seed.js data/demo-sample.json --allow-partial",
+    "worker:once": "node apps/worker/src/index.js --once"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {}
+}

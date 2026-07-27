@@ -1,0 +1,14 @@
+title = "Hearth secret scanning"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Documented placeholders only"
+paths = [
+  '''\.env\.example$''',
+  '''docs/.*\.md$'''
+]
+regexes = [
+  '''postgresql://root@localhost:26257/hearth\?sslmode=disable'''
+]
