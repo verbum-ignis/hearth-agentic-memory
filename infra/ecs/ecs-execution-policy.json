@@ -1,0 +1,24 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadHearthSecrets",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "arn:aws:secretsmanager:us-east-2:*:secret:hearth-*"
+    },
+    {
+      "Sid": "WriteHearthEcsLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:us-east-2:*:log-group:/ecs/hearth-*:*"
+    }
+  ]
+}
