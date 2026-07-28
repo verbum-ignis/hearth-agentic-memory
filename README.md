@@ -6,6 +6,8 @@
 Hearth is a save point for an agent's life: memories fade, resurface, and the
 agent chooses which ones to open before continuing its own story.
 
+**Live demo:** [he-2162d6ada1c249eda6088c9f73711e3b.ecs.us-east-2.on.aws](https://he-2162d6ada1c249eda6088c9f73711e3b.ecs.us-east-2.on.aws/)
+
 ## Hackathon project and prior concept
 
 The private Hearth concept predates the competition. This public implementation
@@ -105,5 +107,5 @@ web/               dependency-free English-first demo UI
 
 `EMBEDDING_PROVIDER=fixture` is deterministic and proves orchestration only;
 it is not presented as semantic retrieval. Jina is the frozen embedding path.
-AWS Fargate has verified the Jina worker path; public application deployment is
-in progress. The Bedrock account gate is not a dependency of semantic recall.
+AWS Fargate runs both the public web/API service and a single asynchronous Jina
+worker. The Bedrock account gate is not a dependency of semantic recall.
