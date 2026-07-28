@@ -13,6 +13,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY package.json package-lock.json ./
 COPY apps ./apps
 COPY packages ./packages
+COPY web ./web
 
 EXPOSE 3000
 USER node
