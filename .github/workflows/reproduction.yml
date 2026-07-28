@@ -1,0 +1,67 @@
+name: reproduction
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readme-path:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DATABASE_URL: postgresql://root@localhost:26257/hearth?sslmode=disable
+      SESSION_HASH_SECRET: ci-only-session-hash-secret-32-bytes
+      ALLOWED_ORIGINS: http://localhost:3000
+      EMBEDDING_PROVIDER: fixture
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start CockroachDB
+        run: docker compose up -d --wait cockroach
+
+      - name: Run the documented database and test path
+        run: |
+          npm run db:migrate
+          npm run db:smoke
+          npm run validate:sample
+          npm run seed:sample
+          npm test
+
+      - name: Verify the demo server and browser entry point
+        run: |
+          npm run server > /tmp/hearth-server.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent http://localhost:3000/healthz > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl --fail --silent http://localhost:3000/healthz
+          curl --fail --silent http://localhost:3000/ > /dev/null
+
+      - name: Show diagnostics on failure
+        if: failure()
+        run: |
+          docker compose ps
+          docker compose logs cockroach
+          if [ -f /tmp/hearth-server.log ]; then
+            sed -n '1,240p' /tmp/hearth-server.log
+          fi
+
+      - name: Stop CockroachDB
+        if: always()
+        run: docker compose down -v

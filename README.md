@@ -1,8 +1,10 @@
 # Hearth · A save point for an agent's life
 
-Hearth is not another chat history. It is a save point for agent memory:
-retrieval brings records to the fire; the agent chooses which records to open
-before continuing its own story.
+[![reproduction](https://github.com/verbum-ignis/hearth-agentic-memory/actions/workflows/reproduction.yml/badge.svg)](https://github.com/verbum-ignis/hearth-agentic-memory/actions/workflows/reproduction.yml)
+[![secret scan](https://github.com/verbum-ignis/hearth-agentic-memory/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/verbum-ignis/hearth-agentic-memory/actions/workflows/secret-scan.yml)
+
+Hearth is a save point for an agent's life: memories fade, resurface, and the
+agent chooses which ones to open before continuing its own story.
 
 ## Hackathon project and prior concept
 
@@ -23,6 +25,21 @@ submission.
 - HearthEval v1.1: 128 queries across 15 categories with a train-only threshold;
 - a browser demo for surfacing, session saves, pending-to-ready state, and the
   memory constellation.
+
+## CockroachDB tools used
+
+Hearth meaningfully integrates two CockroachDB hackathon tools:
+
+1. **Distributed Vector Indexing** powers scope-prefiltered cosine recall over
+   1,024-dimensional bilingual memory embeddings. The retrieval path forces the
+   vector index, then applies session overlays, lifecycle rules, decay, sealed
+   isolation, and the calibrated similarity threshold before returning results.
+2. **CockroachDB Cloud Managed MCP** is the read-only operational surface for a
+   Hearth memory health check. An authorized Codex client verifies core schemas,
+   embedding coverage and integrity, effective decay-band distribution, recent
+   touch/session-overlay activity, and vector-index visibility without reading
+   memory bodies or receiving write access. A redacted real-cluster run is in
+   [`docs/evidence/crdb-managed-mcp.md`](docs/evidence/crdb-managed-mcp.md).
 
 ## Run locally
 
@@ -65,5 +82,5 @@ web/               dependency-free English-first demo UI
 
 `EMBEDDING_PROVIDER=fixture` is deterministic and proves orchestration only;
 it is not presented as semantic retrieval. Jina is the frozen embedding path.
-AWS supplies the deployed application and worker runtime; the Bedrock account
-gate is not a dependency of semantic recall.
+AWS Fargate has verified the Jina worker path; public application deployment is
+in progress. The Bedrock account gate is not a dependency of semantic recall.
