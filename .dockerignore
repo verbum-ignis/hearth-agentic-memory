@@ -1,0 +1,15 @@
+.git
+.github
+.env
+.env.*
+!.env.example
+node_modules
+npm-debug.log*
+coverage
+eval
+data
+docs
+infra
+test
+输出物
+*.md
