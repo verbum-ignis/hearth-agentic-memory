@@ -166,10 +166,11 @@ CREATE TABLE IF NOT EXISTS hearth_provider_calls (
   INDEX hearth_provider_calls_session_idx (session_id_hash, created_at DESC)
 );
 
-UPSERT INTO hearth_recall_config (
+INSERT INTO hearth_recall_config (
   config_key, config_version, embedding_provider, embedding_model,
   embedding_dimensions, embedding_normalize, semantic_threshold, settings
 ) VALUES (
   'active', 'hearth-v1', 'fixture', 'fixture-sha256-v1',
   1024, true, 0.55, '{"distance":"cosine","mode":"fixture-is-not-semantic"}'
-);
+)
+ON CONFLICT (config_key) DO NOTHING;

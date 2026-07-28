@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import { LOCAL_DATABASE_URL } from '../packages/db/src/pool.js';
@@ -19,14 +19,36 @@ try {
   await admin.end();
 }
 
-const migrationPath = fileURLToPath(new URL('../db/migrations/001_initial.sql', import.meta.url));
-const sql = await readFile(migrationPath, 'utf8');
+const migrationDirectory = fileURLToPath(new URL('../db/migrations/', import.meta.url));
+const migrationFiles = (await readdir(migrationDirectory))
+  .filter((name) => /^\d+_.+\.sql$/u.test(name))
+  .sort();
 const client = new Client({ connectionString: targetUrl.toString(), application_name: 'hearth-migrate' });
 await client.connect();
 try {
-  await client.query(sql);
+  await client.query(`
+    CREATE TABLE IF NOT EXISTS hearth_schema_migrations (
+      filename STRING PRIMARY KEY,
+      applied_at TIMESTAMPTZ NOT NULL DEFAULT current_timestamp()
+    )
+  `);
+  let appliedCount = 0;
+  for (const file of migrationFiles) {
+    const applied = await client.query(
+      'SELECT 1 FROM hearth_schema_migrations WHERE filename = $1',
+      [file],
+    );
+    if (applied.rowCount === 1) continue;
+    const sql = await readFile(`${migrationDirectory}/${file}`, 'utf8');
+    await client.query(sql);
+    await client.query(
+      'INSERT INTO hearth_schema_migrations (filename) VALUES ($1) ON CONFLICT DO NOTHING',
+      [file],
+    );
+    appliedCount += 1;
+  }
   const version = await client.query('SELECT version() AS version');
-  process.stdout.write(`Migration complete on ${version.rows[0].version}\n`);
+  process.stdout.write(`Applied ${appliedCount}/${migrationFiles.length} pending migrations on ${version.rows[0].version}\n`);
 } finally {
   await client.end();
 }

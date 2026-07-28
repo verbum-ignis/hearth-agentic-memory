@@ -59,3 +59,29 @@ test('ANN SQL has only the scope predicate and forces the vector index', async (
   assert.doesNotMatch(captured.sql, /WHERE[\s\S]*(sealed|status|embedding_status)\s*=/u);
   assert.deepEqual(captured.params, ['scope-a', '[1,0]', 20]);
 });
+
+test('session overlay is applied after ANN and before lifecycle filtering', async () => {
+  let call = 0;
+  const pool = {
+    async query() {
+      call += 1;
+      if (call === 1) {
+        return { rows: [candidate('revived', {
+          type: 'stream',
+          last_accessed: '2026-06-01T00:00:00.000Z',
+        })] };
+      }
+      return { rows: [{
+        entry_id: 'revived',
+        effective_last_accessed: '2026-07-26T00:00:00.000Z',
+        effective_anchor: 0,
+        effective_tier_since: null,
+      }] };
+    },
+  };
+  const result = await recallByEmbedding(pool, '[1,0]', {
+    scopeId: 'demo_public', sessionIdHash: 'session-hash', asOf, oversample: 20,
+  });
+  assert.deepEqual(result.map((item) => item.id), ['revived']);
+  assert.equal(call, 2);
+});

@@ -36,6 +36,7 @@ export function filterRecallCandidates(rows, {
 
 export async function recallByEmbedding(pool, embedding, {
   scopeId = 'demo_public',
+  sessionIdHash = null,
   asOf = new Date(),
   excludeIds = [],
   threshold = 0,
@@ -64,6 +65,22 @@ export async function recallByEmbedding(pool, embedding, {
     ORDER BY embedding <=> $2::VECTOR
     LIMIT $3
   `, [scopeId, queryVector, oversample]);
+
+  if (sessionIdHash && result.rows.length > 0) {
+    const state = await pool.query(`
+      SELECT entry_id, effective_last_accessed, effective_anchor, effective_tier_since
+      FROM hearth_session_entry_state
+      WHERE session_id_hash = $1 AND entry_id = ANY($2::STRING[])
+    `, [sessionIdHash, result.rows.map((row) => row.id)]);
+    const byId = new Map(state.rows.map((row) => [row.entry_id, row]));
+    for (const row of result.rows) {
+      const overlay = byId.get(row.id);
+      if (!overlay) continue;
+      row.last_accessed = overlay.effective_last_accessed;
+      row.anchor = overlay.effective_anchor;
+      row.tier_since = overlay.effective_tier_since;
+    }
+  }
 
   return filterRecallCandidates(result.rows, { asOf, excludeIds, threshold, topK });
 }
