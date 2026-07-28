@@ -39,6 +39,16 @@ The single cosine-similarity threshold remains:
 It was calibrated only on the train split. Adding q127 did not change it. Validation and test were not
 used to retune the threshold.
 
+The active CockroachDB configuration was updated by Fargate task
+`8b5049fc7d494bd0831326c4662c3b25` and read back as:
+
+- config version: `hearth-v1-jina-eval-1.1.0`
+- provider/model: `jina` / `jina-embeddings-v3`
+- document/query tasks: `retrieval.passage` / `retrieval.query`
+- dimensions/normalization: 1024 / true
+- semantic threshold: `0.31572555182454015`
+- updated at: `2026-07-28T09:21:16.283Z`
+
 ## Final metrics
 
 | Split | Queries | Hit@1 | Hit@3 | MRR | No-hit | Forbidden | P95 |
