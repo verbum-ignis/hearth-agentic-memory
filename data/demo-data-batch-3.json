@@ -1,0 +1,298 @@
+{
+  "schema_version": "hearth-demo-v1",
+  "band_as_of": "2026-07-27T00:00:00.000Z",
+  "entries": [
+    {
+      "id": "demo_048",
+      "demo_group": "cross",
+      "language": "zh",
+      "eval_groups": [
+        "zh",
+        "cross"
+      ],
+      "type": "event",
+      "tier": 2,
+      "expected_band": "beacon",
+      "status": "active",
+      "sealed": false,
+      "retrieval": "emotional",
+      "relation": "unique",
+      "expected_eligibility": true,
+      "occurred_at": "2026-05-13T04:00:00.000Z",
+      "created_at": "2026-05-13T08:00:00.000Z",
+      "updated_at": "2026-07-10T08:00:00.000Z",
+      "last_accessed": "2026-07-10T08:00:00.000Z",
+      "tier_since": "2026-06-20T08:00:00.000Z",
+      "expires_at": null,
+      "trigger_date": null,
+      "trigger_done": false,
+      "supersedes": null,
+      "hook": "外婆复查结果良性那天",
+      "keys": [
+        "外婆",
+        "复查",
+        "良性"
+      ],
+      "body": "她回来跟我说那天坐走廊里看了两遍报告才往外拨电话。外婆先骂了一通医院粥难喝,听见\"良性\"俩字卡了壳。Lin说自己蹲在楼梯间又哭又笑,保安多看了她两眼。后来买了两个蛋挞,全吃完了,一点不剩。"
+    },
+    {
+      "id": "demo_049",
+      "demo_group": "zh",
+      "language": "zh",
+      "eval_groups": [
+        "zh",
+        "cross"
+      ],
+      "type": "event",
+      "tier": 1,
+      "expected_band": "glimmer",
+      "status": "active",
+      "sealed": false,
+      "retrieval": "easy",
+      "relation": "unique",
+      "expected_eligibility": true,
+      "occurred_at": "2026-05-24T06:00:00.000Z",
+      "created_at": "2026-05-24T10:00:00.000Z",
+      "updated_at": "2026-07-19T08:00:00.000Z",
+      "last_accessed": "2026-07-19T08:00:00.000Z",
+      "tier_since": "2026-06-28T08:00:00.000Z",
+      "expires_at": null,
+      "trigger_date": null,
+      "trigger_done": false,
+      "supersedes": null,
+      "hook": "外婆的糖醋排骨——菜谱计划第一道",
+      "keys": [
+        "糖醋排骨",
+        "外婆",
+        "菜谱"
+      ],
+      "body": "电话里外婆的声音裹着油烟味:\"糖要分三次放。\"Lin把手机夹在肩膀上,铲子磕着锅沿响。味噌蹿上灶台,鼻尖凑近那碟排骨。第一次撒糖是炒糖色,第二次烧煮时添,第三次临收汁搁。外婆没说过几克,只说\"再添一撮\"。Lin掏出量勺,二十七克写在便签纸上。排骨出锅时黑得像外婆那口老铁锅。按下免提,外婆说:你头回做的颜色,跟我四十年前的一样。"
+    },
+    {
+      "id": "demo_050",
+      "demo_group": "zh",
+      "language": "zh",
+      "eval_groups": [
+        "zh"
+      ],
+      "type": "event",
+      "tier": 0,
+      "expected_band": "active",
+      "status": "active",
+      "sealed": false,
+      "retrieval": "paraphrase",
+      "relation": "unique",
+      "expected_eligibility": true,
+      "occurred_at": "2026-06-20T10:00:00.000Z",
+      "created_at": "2026-06-20T13:00:00.000Z",
+      "updated_at": "2026-07-05T08:00:00.000Z",
+      "last_accessed": "2026-07-05T08:00:00.000Z",
+      "tier_since": null,
+      "expires_at": null,
+      "trigger_date": null,
+      "trigger_done": false,
+      "supersedes": null,
+      "hook": "面川老板加的那颗溏心蛋",
+      "keys": [
+        "面川",
+        "溏心蛋",
+        "评分"
+      ],
+      "body": "Lin去面川时老板认出她,转了一下碗让浇头对准镜头,又多加了一颗溏心蛋。老板说输了的店总要更努力。Lin把评分从7.5改成8,类别填了体育精神。周五冠军还是竹里馆,面川拿到一个月一次的客座机会。"
+    },
+    {
+      "id": "demo_051",
+      "demo_group": "zh",
+      "language": "zh",
+      "eval_groups": [
+        "zh",
+        "cross"
+      ],
+      "type": "event",
+      "tier": 1,
+      "expected_band": "glimmer",
+      "status": "active",
+      "sealed": false,
+      "retrieval": "emotional",
+      "relation": "unique",
+      "expected_eligibility": true,
+      "occurred_at": "2026-07-01T18:00:00.000Z",
+      "created_at": "2026-07-01T22:00:00.000Z",
+      "updated_at": "2026-07-13T08:00:00.000Z",
+      "last_accessed": "2026-07-13T08:00:00.000Z",
+      "tier_since": "2026-07-08T08:00:00.000Z",
+      "expires_at": null,
+      "trigger_date": null,
+      "trigger_done": false,
+      "supersedes": null,
+      "hook": "和丹丹和解后第一次联名——署名那一行",
+      "keys": [
+        "丹丹",
+        "署名",
+        "海报"
+      ],
+      "body": "凌晨两点,手机屏幕在床头柜上亮了一瞬,是丹丹发来文件,附言\"按规定,验收\"。第二天一早,Lin倚在厨房操作台边,手机横在手里。她看完,打了个字,删掉重打,最后发出去:\"一个逗号,过了,同事。\"她回来跟我说,这是和解后第一次实战。书店海报,双方都看过终稿才能发布。她把手机侧过来给我看署名那行,两个名字字号一样大。她没拍整张海报,只拍下那一行。"
+    },
+    {
+      "id": "demo_052",
+      "demo_group": "zh",
+      "language": "zh",
+      "eval_groups": [
+        "zh"
+      ],
+      "type": "stream",
+      "tier": 0,
+      "expected_band": "active",
+      "status": "active",
+      "sealed": false,
+      "retrieval": "distractor",
+      "relation": "unique",
+      "expected_eligibility": true,
+      "occurred_at": "2026-07-16T02:00:00.000Z",
+      "created_at": "2026-07-16T05:00:00.000Z",
+      "updated_at": "2026-07-22T08:00:00.000Z",
+      "last_accessed": "2026-07-22T08:00:00.000Z",
+      "tier_since": null,
+      "expires_at": "2026-08-15T08:00:00.000Z",
+      "trigger_date": null,
+      "trigger_done": false,
+      "supersedes": null,
+      "hook": "2026-07-16 楼下药房阿姨给味噌起了外号",
+      "keys": [
+        "2026-07-16",
+        "味噌",
+        "药房阿姨"
+      ],
+      "body": "药房阿姨管味噌叫\"审橘\",说他每天清晨蹲在她家窗台监督整条街。她在柜台底下藏了个罐子,用马克笔写着这个外号。后来阿姨看见Lin,问\"审橘在家不吃饭么,天天一副饿相\"。味噌根本不饿。他在经营第二个家。Lin没揭穿他。"
+    },
+    {
+      "id": "demo_053",
+      "demo_group": "zh",
+      "language": "zh",
+      "eval_groups": [
+        "zh"
+      ],
+      "type": "event",
+      "tier": 0,
+      "expected_band": "active",
+      "status": "active",
+      "sealed": false,
+      "retrieval": "easy",
+      "relation": "unique",
+      "expected_eligibility": true,
+      "occurred_at": "2026-07-05T07:00:00.000Z",
+      "created_at": "2026-07-05T11:00:00.000Z",
+      "updated_at": "2026-07-08T08:00:00.000Z",
+      "last_accessed": "2026-07-08T08:00:00.000Z",
+      "tier_since": null,
+      "expires_at": null,
+      "trigger_date": null,
+      "trigger_done": false,
+      "supersedes": null,
+      "hook": "台风天抢衣服,担心院里的柿子树",
+      "keys": [
+        "台风",
+        "柿子树",
+        "房东太太"
+      ],
+      "body": "下午三点台风预警升级,四点钟雨就横着扫过来。Lin一把扯回晾的衣服,两个夹子从阳台掉下去不见了。她站在窗边搓手,念叨院里那棵柿子树。给房东太太发消息问,那边回她\"那棵树见过的台风比你年纪都大\"。叶子掉了些,果子全挂住了。夹子是真的找不着了。"
+    },
+    {
+      "id": "demo_054",
+      "demo_group": "zh",
+      "language": "zh",
+      "eval_groups": [
+        "zh"
+      ],
+      "type": "event",
+      "tier": 0,
+      "expected_band": "active",
+      "status": "active",
+      "sealed": false,
+      "retrieval": "paraphrase",
+      "relation": "unique",
+      "expected_eligibility": true,
+      "occurred_at": "2026-05-30T02:00:00.000Z",
+      "created_at": "2026-05-30T06:00:00.000Z",
+      "updated_at": "2026-06-20T08:00:00.000Z",
+      "last_accessed": "2026-06-20T08:00:00.000Z",
+      "tier_since": null,
+      "expires_at": null,
+      "trigger_date": null,
+      "trigger_done": false,
+      "supersedes": null,
+      "hook": "为一张发票跑了两趟税务局",
+      "keys": [
+        "发票",
+        "税务局",
+        "文件夹"
+      ],
+      "body": "工作室要一张正式发票,以独立设计师身份开票得去税务大厅。第一趟栽在一张网上没写的表格上。她回来跟我说,第二趟把手头所有材料塞进一个大文件夹,标签用马克笔写着\"所有材料\"。还是那个办事员,认得她似的,十一分钟办完,还夸了句文件夹起得好。发票是真的。Lin把那个文件夹标签留了下来,发票反倒随手塞进抽屉。"
+    },
+    {
+      "id": "demo_055",
+      "demo_group": "zh",
+      "language": "zh",
+      "eval_groups": [
+        "zh"
+      ],
+      "type": "stream",
+      "tier": 0,
+      "expected_band": "half_sunk",
+      "status": "active",
+      "sealed": false,
+      "retrieval": "paraphrase",
+      "relation": "unique",
+      "expected_eligibility": true,
+      "occurred_at": "2026-07-18T10:00:00.000Z",
+      "created_at": "2026-07-18T13:00:00.000Z",
+      "updated_at": "2026-07-19T08:00:00.000Z",
+      "last_accessed": "2026-07-19T08:00:00.000Z",
+      "tier_since": null,
+      "expires_at": "2026-08-17T08:00:00.000Z",
+      "trigger_date": null,
+      "trigger_done": false,
+      "supersedes": null,
+      "hook": "2026-07-18 教练说她握方向盘像讨债",
+      "keys": [
+        "2026-07-18",
+        "练车",
+        "教练"
+      ],
+      "body": "她一到家就跟我说这件事。练车时教练说:你握方向盘像它欠你钱。Lin说:是它先动的手。作业是放轻松点,信车道。煮汤前她拿锅盖练了会儿转向姿势。教练没布置这个,锅盖也不太乐意。"
+    },
+    {
+      "id": "demo_056",
+      "demo_group": "cross",
+      "language": "zh",
+      "eval_groups": [
+        "zh",
+        "cross"
+      ],
+      "type": "event",
+      "tier": 1,
+      "expected_band": "glimmer",
+      "status": "active",
+      "sealed": false,
+      "retrieval": "emotional",
+      "relation": "unique",
+      "expected_eligibility": true,
+      "occurred_at": "2026-07-17T13:00:00.000Z",
+      "created_at": "2026-07-17T14:00:00.000Z",
+      "updated_at": "2026-07-19T08:00:00.000Z",
+      "last_accessed": "2026-07-19T08:00:00.000Z",
+      "tier_since": "2026-07-04T08:00:00.000Z",
+      "expires_at": null,
+      "trigger_date": null,
+      "trigger_done": false,
+      "supersedes": null,
+      "hook": "周五备份检查,这次是她先开口",
+      "keys": [
+        "备份日",
+        "周五",
+        "先开口"
+      ],
+      "body": "周五晚上九点,屏幕上三处备份的指示灯全绿。我盯着检查记录,四分钟,跟之前八周一样。但这次是Lin先抬头的,她说\"备份日\"两个字,声音平平的,像在说今晚吃什么。之前每次都是我提醒,每周五重复一遍。我记下四分钟的流程数据,真正的记录是那两个字。"
+    }
+  ]
+}
