@@ -8,3 +8,5 @@ dist/
 cockroach-data/
 docs/evidence/*.actual.txt
 !docs/evidence/.gitkeep
+
+eval/demo75_bodies.txt
