@@ -44,6 +44,21 @@ band=deep 的四条全部与 retired/superseded 重叠,无法独立验证——�
 Hit@3 ≥ 0.75、No-hit ≥ 0.90、P95 < 800ms(目标 500ms)。
 Day 3 跨语言裁决:cross 组 Hit@3 ≥ 0.50 保留 / < 0.50 撤场景仍如实报告。
 
+## 跑分命令
+
+真实采集必须在能访问 Jina 与 CockroachDB Cloud 的环境执行，且只保存候选 id、相似度与耗时，
+不保存向量或密钥：
+
+```bash
+node eval/run-eval.js collect --split all --output eval/results/jina-raw.json
+node eval/run-eval.js score --split train --calibrate --input eval/results/jina-raw.json
+node eval/run-eval.js score --split val --threshold <TRAIN_THRESHOLD> --input eval/results/jina-raw.json
+node eval/run-eval.js score --split test --threshold <TRAIN_THRESHOLD> --input eval/results/jina-raw.json
+```
+
+阈值只能由 train 校准；val/test 禁止使用 `--calibrate`。正式报告分 EN、ZH、Cross、Combined，
+同时报告 Hit@1、Hit@3、MRR、No-hit accuracy、forbidden violations 与端到端 P95。
+
 ## 变更记录
 
 - **v1.0.1**(Q-013 三点全收):q093 改 `leakage_only`(排除唯一强匹配后,空结果或弱

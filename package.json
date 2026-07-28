@@ -17,7 +17,11 @@
     "seed:sample": "node scripts/seed.js data/demo-sample.json",
     "validate:seed": "node scripts/validate-seed.js",
     "validate:sample": "node scripts/validate-seed.js data/demo-sample.json --allow-partial",
-    "worker:once": "node apps/worker/src/index.js --once"
+    "worker:once": "node apps/worker/src/index.js --once",
+    "worker:drain": "node apps/worker/src/index.js --until-idle",
+    "eval:validate": "python eval/validate_eval.py",
+    "eval:collect": "node eval/run-eval.js collect",
+    "eval:score": "node eval/run-eval.js score"
   },
   "dependencies": {
     "pg": "^8.16.3"
