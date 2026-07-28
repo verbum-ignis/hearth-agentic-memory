@@ -1,0 +1,171 @@
+{
+  "schemaVersion": "hearth-eval-report-v1",
+  "evalVersion": "1.0.1",
+  "rawCollectedAt": "2026-07-28T08:52:35.716Z",
+  "split": "val",
+  "threshold": 0.31572555182454015,
+  "provider": "jina",
+  "model": "jina-embeddings-v3",
+  "groups": {
+    "en": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 15,
+      "noHitCount": 2,
+      "leakageProbeCount": 1,
+      "hit1": 0.7333333333333333,
+      "hit3": 0.8,
+      "mrr": 0.7555555555555554,
+      "noHitAccuracy": 0.5,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [
+          {
+            "id": "q026",
+            "ids": [
+              "demo_072",
+              "demo_029"
+            ],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          },
+          {
+            "id": "q067",
+            "ids": [],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          },
+          {
+            "id": "q088",
+            "ids": [
+              "demo_075",
+              "demo_072",
+              "demo_022"
+            ],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          }
+        ],
+        "noHit": [
+          {
+            "id": "q051",
+            "ids": [
+              "demo_028"
+            ],
+            "forbiddenHits": [],
+            "correct": false
+          }
+        ],
+        "forbidden": []
+      },
+      "queryCount": 18,
+      "p95Ms": 685.305
+    },
+    "zh": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 11,
+      "noHitCount": 2,
+      "leakageProbeCount": 3,
+      "hit1": 0.8181818181818182,
+      "hit3": 1,
+      "mrr": 0.9090909090909091,
+      "noHitAccuracy": 1,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [],
+        "noHit": [],
+        "forbidden": []
+      },
+      "queryCount": 16,
+      "p95Ms": 479.628
+    },
+    "cross": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 7,
+      "noHitCount": 0,
+      "leakageProbeCount": 0,
+      "hit1": 0.8571428571428571,
+      "hit3": 1,
+      "mrr": 0.9285714285714286,
+      "noHitAccuracy": null,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [],
+        "noHit": [],
+        "forbidden": []
+      },
+      "queryCount": 7,
+      "p95Ms": 324.53
+    },
+    "combined": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 33,
+      "noHitCount": 4,
+      "leakageProbeCount": 4,
+      "hit1": 0.7878787878787878,
+      "hit3": 0.9090909090909091,
+      "mrr": 0.8434343434343435,
+      "noHitAccuracy": 0.75,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [
+          {
+            "id": "q026",
+            "ids": [
+              "demo_072",
+              "demo_029"
+            ],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          },
+          {
+            "id": "q067",
+            "ids": [],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          },
+          {
+            "id": "q088",
+            "ids": [
+              "demo_075",
+              "demo_072",
+              "demo_022"
+            ],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          }
+        ],
+        "noHit": [
+          {
+            "id": "q051",
+            "ids": [
+              "demo_028"
+            ],
+            "forbiddenHits": [],
+            "correct": false
+          }
+        ],
+        "forbidden": []
+      },
+      "queryCount": 41,
+      "p95Ms": 479.628
+    }
+  }
+}
