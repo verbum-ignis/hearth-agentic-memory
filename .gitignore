@@ -10,3 +10,7 @@ docs/evidence/*.actual.txt
 !docs/evidence/.gitkeep
 
 eval/demo75_bodies.txt
+
+# local demo launchers with plaintext credentials — never commit
+start-demo.js
+start-demo.bat
