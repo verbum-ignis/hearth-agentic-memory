@@ -19,6 +19,7 @@
     "validate:sample": "node scripts/validate-seed.js data/demo-sample.json --allow-partial",
     "worker:once": "node apps/worker/src/index.js --once",
     "worker:drain": "node apps/worker/src/index.js --until-idle",
+    "recall:configure": "node scripts/set-recall-config.js",
     "eval:validate": "python eval/validate_eval.py",
     "eval:collect": "node eval/run-eval.js collect",
     "eval:score": "node eval/run-eval.js score"

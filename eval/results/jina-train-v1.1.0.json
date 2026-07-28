@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "hearth-eval-report-v1",
+  "evalVersion": "1.1.0",
+  "rawCollectedAt": "2026-07-28T09:16:00.091Z",
+  "split": "train",
+  "threshold": 0.31572555182454015,
+  "provider": "jina",
+  "model": "jina-embeddings-v3",
+  "groups": {
+    "en": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 15,
+      "noHitCount": 2,
+      "leakageProbeCount": 1,
+      "hit1": 0.8,
+      "hit3": 0.9333333333333333,
+      "mrr": 0.8555555555555556,
+      "noHitAccuracy": 1,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [
+          {
+            "id": "q066",
+            "ids": [],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          }
+        ],
+        "noHit": [],
+        "forbidden": []
+      },
+      "queryCount": 18,
+      "p95Ms": 1213.209
+    },
+    "zh": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 13,
+      "noHitCount": 3,
+      "leakageProbeCount": 6,
+      "hit1": 0.8461538461538461,
+      "hit3": 0.8461538461538461,
+      "mrr": 0.8461538461538461,
+      "noHitAccuracy": 1,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [
+          {
+            "id": "q034",
+            "ids": [
+              "demo_015",
+              "demo_053",
+              "demo_075"
+            ],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          },
+          {
+            "id": "q090",
+            "ids": [],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          }
+        ],
+        "noHit": [],
+        "forbidden": []
+      },
+      "queryCount": 22,
+      "p95Ms": 682.748
+    },
+    "cross": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 8,
+      "noHitCount": 0,
+      "leakageProbeCount": 0,
+      "hit1": 0.875,
+      "hit3": 0.875,
+      "mrr": 0.875,
+      "noHitAccuracy": null,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [
+          {
+            "id": "q103",
+            "ids": [
+              "demo_063",
+              "demo_027",
+              "demo_003"
+            ],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          }
+        ],
+        "noHit": [],
+        "forbidden": []
+      },
+      "queryCount": 8,
+      "p95Ms": 387.796
+    },
+    "combined": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 36,
+      "noHitCount": 5,
+      "leakageProbeCount": 7,
+      "hit1": 0.8333333333333334,
+      "hit3": 0.8888888888888888,
+      "mrr": 0.8564814814814814,
+      "noHitAccuracy": 1,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [
+          {
+            "id": "q034",
+            "ids": [
+              "demo_015",
+              "demo_053",
+              "demo_075"
+            ],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          },
+          {
+            "id": "q066",
+            "ids": [],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          },
+          {
+            "id": "q090",
+            "ids": [],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          },
+          {
+            "id": "q103",
+            "ids": [
+              "demo_063",
+              "demo_027",
+              "demo_003"
+            ],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          }
+        ],
+        "noHit": [],
+        "forbidden": []
+      },
+      "queryCount": 48,
+      "p95Ms": 682.748
+    }
+  }
+}

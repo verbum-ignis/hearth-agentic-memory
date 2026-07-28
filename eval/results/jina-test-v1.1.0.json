@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "hearth-eval-report-v1",
+  "evalVersion": "1.1.0",
+  "rawCollectedAt": "2026-07-28T09:16:00.091Z",
+  "split": "test",
+  "threshold": 0.31572555182454015,
+  "provider": "jina",
+  "model": "jina-embeddings-v3",
+  "groups": {
+    "en": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 12,
+      "noHitCount": 3,
+      "leakageProbeCount": 0,
+      "hit1": 0.8333333333333334,
+      "hit3": 0.8333333333333334,
+      "mrr": 0.8333333333333334,
+      "noHitAccuracy": 1,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [
+          {
+            "id": "q027",
+            "ids": [],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          },
+          {
+            "id": "q089",
+            "ids": [],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          }
+        ],
+        "noHit": [],
+        "forbidden": []
+      },
+      "queryCount": 15,
+      "p95Ms": 524.609
+    },
+    "zh": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 12,
+      "noHitCount": 1,
+      "leakageProbeCount": 4,
+      "hit1": 0.8333333333333334,
+      "hit3": 0.9166666666666666,
+      "mrr": 0.875,
+      "noHitAccuracy": 1,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [
+          {
+            "id": "q033",
+            "ids": [
+              "demo_055",
+              "demo_006",
+              "demo_007"
+            ],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          }
+        ],
+        "noHit": [],
+        "forbidden": []
+      },
+      "queryCount": 17,
+      "p95Ms": 482.398
+    },
+    "cross": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 7,
+      "noHitCount": 0,
+      "leakageProbeCount": 0,
+      "hit1": 1,
+      "hit3": 1,
+      "mrr": 1,
+      "noHitAccuracy": null,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [],
+        "noHit": [],
+        "forbidden": []
+      },
+      "queryCount": 7,
+      "p95Ms": 492.442
+    },
+    "combined": {
+      "threshold": 0.31572555182454015,
+      "retrievalCount": 31,
+      "noHitCount": 4,
+      "leakageProbeCount": 4,
+      "hit1": 0.8709677419354839,
+      "hit3": 0.9032258064516129,
+      "mrr": 0.8870967741935484,
+      "noHitAccuracy": 1,
+      "forbiddenViolationCount": 0,
+      "failures": {
+        "retrieval": [
+          {
+            "id": "q027",
+            "ids": [],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          },
+          {
+            "id": "q033",
+            "ids": [
+              "demo_055",
+              "demo_006",
+              "demo_007"
+            ],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          },
+          {
+            "id": "q089",
+            "ids": [],
+            "forbiddenHits": [],
+            "rank": null,
+            "hit1": false,
+            "hit3": false,
+            "reciprocalRank": 0
+          }
+        ],
+        "noHit": [],
+        "forbidden": []
+      },
+      "queryCount": 39,
+      "p95Ms": 492.442
+    }
+  }
+}
