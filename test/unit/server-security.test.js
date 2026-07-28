@@ -22,6 +22,7 @@ function fakeApp() {
       candidates: [{ id: session.scope_id, hook: 'A safe hook', score: 0.99, type: 'event', language: 'en' }],
     }),
     surface: async () => ({ memories: [], run_id: 'run-1', semantic_status: 'ready' }),
+    demo: { save: async () => ({}), status: async () => ({}), constellation: async () => [] },
     logger: { error() {} },
   });
 }
@@ -66,5 +67,15 @@ test('/recall uses server session scope and never exposes score or body', async 
     assert.equal('score' in payload.memories[0], false);
     assert.equal('body' in payload.memories[0], false);
     assert.equal(response.headers.get('cache-control'), 'no-store');
+  });
+});
+
+test('the judge-facing web demo is served by the same application', async () => {
+  await withServer(fakeApp(), async (base) => {
+    const response = await fetch(base);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, /A save point for agent memory/u);
+    assert.match(html, /Memory constellation/u);
   });
 });

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Hearth is a save point for an agent's life—not another chat history.">
+  <title>Hearth · An agent's save point</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <p class="eyebrow">A save point for agent memory</p>
+      <h1>Hearth <span>篝火</span></h1>
+      <p class="lede">Not another chat history. A place where an agent can return to what it chose to keep—and continue its own story.</p>
+    </header>
+
+    <section class="panel speak-panel">
+      <div class="section-title"><span>01</span><div><h2>Speak by the fire</h2><p>Try remembering without repeating the original words.</p></div></div>
+      <form id="surface-form">
+        <textarea id="surface-text" maxlength="2000" required>the external drive that began clicking before we nearly lost years of work</textarea>
+        <div class="actions"><button type="submit">Let memory surface</button><span id="semantic-status" class="status">waiting</span></div>
+      </form>
+      <div id="surface-results" class="memory-list" aria-live="polite"></div>
+    </section>
+
+    <div class="two-column">
+      <section class="panel">
+        <div class="section-title"><span>02</span><div><h2>Save this moment</h2><p>A new record begins pending, then becomes searchable.</p></div></div>
+        <form id="save-form">
+          <label>Hook<input id="memory-hook" maxlength="240" value="The evening we decided that memory should feel like a save point" required></label>
+          <label>Record<textarea id="memory-body" maxlength="2000" required>We were comparing technical memory systems when the idea became clear: Hearth should not merely retain data. It should let an agent return to its own story.</textarea></label>
+          <label>Keys<input id="memory-keys" value="save point, hearth, continuity"></label>
+          <div class="actions"><button type="submit">Save to this session</button><span id="save-status" class="status">not saved</span></div>
+        </form>
+      </section>
+
+      <section class="panel constellation-panel">
+        <div class="section-title"><span>03</span><div><h2>Memory constellation</h2><p>Every light has a tier, a distance, and a last return.</p></div></div>
+        <div id="constellation" class="constellation" aria-live="polite"></div>
+        <button id="refresh-constellation" class="secondary">Refresh constellation</button>
+      </section>
+    </div>
+  </main>
+  <footer>CockroachDB keeps the record. Hearth decides how the past may return.</footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

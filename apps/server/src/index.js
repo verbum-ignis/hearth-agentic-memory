@@ -1,12 +1,16 @@
 import { createJinaProvider } from '../../worker/src/providers/jina.js';
+import { fixtureProvider } from '../../worker/src/providers/fixture.js';
 import { createPool } from '../../../packages/db/src/pool.js';
 import { createApp } from './app.js';
+import { createDemoService } from './demo-service.js';
 import { createRecallService } from './recall-service.js';
 import { createSessionResolver } from './session.js';
 import { createSurfaceService } from './surface-service.js';
 
 const pool = createPool({ applicationName: 'hearth-server' });
-const provider = createJinaProvider();
+const provider = (process.env.EMBEDDING_PROVIDER ?? 'fixture') === 'jina'
+  ? createJinaProvider()
+  : fixtureProvider;
 const recall = createRecallService(pool, provider);
 const surface = createSurfaceService(pool, recall);
 const allowedOrigins = (process.env.ALLOWED_ORIGINS ?? '')
@@ -22,6 +26,7 @@ const app = createApp({
   resolveSession: createSessionResolver(pool),
   recall,
   surface,
+  demo: createDemoService(pool),
   allowedOrigins,
   trustProxy: Number(process.env.TRUST_PROXY_HOPS ?? 1),
 });

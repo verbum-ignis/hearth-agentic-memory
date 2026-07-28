@@ -1,22 +1,26 @@
 import express from 'express';
+import { fileURLToPath } from 'node:url';
 import { publicError } from './errors.js';
+import { validateMemoryInput } from './demo-service.js';
 import { requestGuards, securityHeaders, validateRecallInput } from './security.js';
 
 export function createApp({
   resolveSession,
   recall,
   surface,
+  demo,
   allowedOrigins = [],
   trustProxy = 1,
   logger = console,
 } = {}) {
-  if (!resolveSession || !recall || !surface) throw new TypeError('resolveSession, recall and surface are required');
+  if (!resolveSession || !recall || !surface || !demo) throw new TypeError('resolveSession, recall, surface and demo are required');
   const app = express();
   app.set('trust proxy', trustProxy);
   app.disable('x-powered-by');
   app.use(securityHeaders);
   app.use(express.json({ limit: '16kb', strict: true }));
   app.use(requestGuards({ allowedOrigins }));
+  app.use(express.static(fileURLToPath(new URL('../../../web/', import.meta.url)), { extensions: ['html'] }));
 
   app.get('/healthz', (_req, res) => res.json({ status: 'ok' }));
 
@@ -48,6 +52,20 @@ export function createApp({
     } catch (error) {
       next(error);
     }
+  });
+
+  app.post('/demo/memories', withSession, async (req, res, next) => {
+    try {
+      res.status(202).json(await demo.save(req.hearthSession, validateMemoryInput(req.body)));
+    } catch (error) { next(error); }
+  });
+
+  app.get('/demo/memories/:id/status', withSession, async (req, res, next) => {
+    try { res.json(await demo.status(req.hearthSession, req.params.id)); } catch (error) { next(error); }
+  });
+
+  app.get('/demo/constellation', withSession, async (req, res, next) => {
+    try { res.json({ memories: await demo.constellation(req.hearthSession) }); } catch (error) { next(error); }
   });
 
   app.use((error, _req, res, _next) => {
