@@ -31,10 +31,24 @@ async function saveJson(path, value) {
   await writeFile(target, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
 }
 
-function selectCases(document, split = 'all') {
-  if (split === 'all') return document.queries;
-  if (!['train', 'val', 'test'].includes(split)) throw new Error(`Invalid split: ${split}`);
-  return document.queries.filter((item) => item.split === split);
+function selectCases(document, split = 'all', ids = null) {
+  let cases;
+  if (split === 'all') cases = document.queries;
+  else {
+    if (!['train', 'val', 'test'].includes(split)) throw new Error(`Invalid split: ${split}`);
+    cases = document.queries.filter((item) => item.split === split);
+  }
+  if (!ids) return cases;
+
+  const requested = new Set(String(ids).split(',').map((id) => id.trim()).filter(Boolean));
+  const known = new Set(document.queries.map((item) => item.id));
+  const unknown = [...requested].filter((id) => !known.has(id));
+  if (unknown.length) throw new Error(`Unknown query ids: ${unknown.join(', ')}`);
+  cases = cases.filter((item) => requested.has(item.id));
+  if (cases.length !== requested.size) {
+    throw new Error('At least one requested query id does not belong to the selected split');
+  }
+  return cases;
 }
 
 async function collect(options) {
@@ -42,7 +56,7 @@ async function collect(options) {
   const dataDocument = await loadJson(options.data ?? 'data/demo-data-v1.json');
   const output = options.output ?? 'eval/results/jina-raw.json';
   const split = options.split ?? 'all';
-  const cases = selectCases(evalDocument, split);
+  const cases = selectCases(evalDocument, split, options.ids);
   const provider = createJinaProvider();
   const pool = createPool({ applicationName: 'hearth-eval-collect', max: 2 });
   const results = {};
@@ -101,7 +115,7 @@ async function score(options) {
   if (options.calibrate && split !== 'train') {
     throw new Error('Threshold calibration is restricted to the train split');
   }
-  const cases = selectCases(evalDocument, split);
+  const cases = selectCases(evalDocument, split, options.ids);
   const candidatesById = Object.fromEntries(Object.entries(raw.results).map(([id, item]) => [id, item.candidates]));
   const durations = Object.fromEntries(Object.entries(raw.results).map(([id, item]) => [id, item.durationMs]));
   const missing = cases.filter((item) => !raw.results[item.id]).map((item) => item.id);

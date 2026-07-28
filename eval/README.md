@@ -53,6 +53,7 @@ Day 3 跨语言裁决:cross 组 Hit@3 ≥ 0.50 保留 / < 0.50 撤场景仍如�
 
 ```bash
 node eval/run-eval.js collect --split all --output eval/results/jina-raw.json
+node eval/run-eval.js collect --ids q127,q128 --output eval/results/jina-v1.1-delta.json
 node eval/run-eval.js score --split train --calibrate --input eval/results/jina-raw.json
 node eval/run-eval.js score --split val --threshold <TRAIN_THRESHOLD> --input eval/results/jina-raw.json
 node eval/run-eval.js score --split test --threshold <TRAIN_THRESHOLD> --input eval/results/jina-raw.json
