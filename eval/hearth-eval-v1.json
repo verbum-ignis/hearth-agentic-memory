@@ -1,9 +1,9 @@
 {
-  "version": "1.0.1",
+  "version": "1.1.0",
   "created": "2026-07-28",
   "annotator": "言",
   "dataset": "data/demo-data-v1.json",
-  "notes": "HearthEval v1. 126 queries across 14 categories per H10v3.4 §12. Scoring: scored=retrieval → Hit@1/Hit@3/MRR against expected (empty expected = no-hit case, counts toward No-hit accuracy); scored=leakage_only → only forbidden ids are checked (hard fail if any appears in top-k). forbidden violations are hard failures in every mode. distractors are informational for error analysis, never scored. exclude_ids must be passed to /recall as the exclude_ids parameter for category=excluded. v1.0.1 (Q-013): q093 rescored as leakage_only; category 'deep' renamed 'body_detail' (tests recall of details buried in body text; band-based decay exclusion is a separate pending category deep_band_probe, blocked on a data amendment); every query now carries query_language for machine-checkable cross-group validation.",
+  "notes": "HearthEval v1. 126 queries across 14 categories per H10v3.4 §12. Scoring: scored=retrieval → Hit@1/Hit@3/MRR against expected (empty expected = no-hit case, counts toward No-hit accuracy); scored=leakage_only → only forbidden ids are checked (hard fail if any appears in top-k). forbidden violations are hard failures in every mode. distractors are informational for error analysis, never scored. exclude_ids must be passed to /recall as the exclude_ids parameter for category=excluded. v1.0.1 (Q-013): q093 rescored as leakage_only; category 'deep' renamed 'body_detail' (tests recall of details buried in body text; band-based decay exclusion is a separate pending category deep_band_probe, blocked on a data amendment); every query now carries query_language for machine-checkable cross-group validation. v1.1.0 (A-014): added deep_band_probe category, 2 leakage_only queries against demo_074 - the only entry that is active/unsealed/non-rule yet recall-ineligible purely because its decay band is deep; a hit proves band filtering is broken.",
   "queries": [
     {
       "id": "q001",
@@ -1963,6 +1963,34 @@
         "demo_044"
       ],
       "notes": "中英混合;规则条目不得出现",
+      "query_language": "zh"
+    },
+    {
+      "id": "q127",
+      "group": "zh",
+      "category": "deep_band_probe",
+      "split": "train",
+      "scored": "leakage_only",
+      "query": "吸油烟机换新的那天,师傅走之前把旧机拆下来的油渍都擦干净了",
+      "expected": [],
+      "forbidden": [
+        "demo_074"
+      ],
+      "notes": "positive paraphrase wording that would strongly match demo_074 if it were recallable; entry is active but band=deep, so any top-k appearance is a decay-filter failure",
+      "query_language": "zh"
+    },
+    {
+      "id": "q128",
+      "group": "zh",
+      "category": "deep_band_probe",
+      "split": "test",
+      "scored": "leakage_only",
+      "query": "新装的吸油烟机声音软塌塌的,像扇子煽风",
+      "expected": [],
+      "forbidden": [
+        "demo_074"
+      ],
+      "notes": "body-deep detail wording aimed at demo_074; same decay-band exclusion contract as q127",
       "query_language": "zh"
     }
   ]

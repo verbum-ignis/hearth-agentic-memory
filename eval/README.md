@@ -25,12 +25,14 @@
 
 paraphrase 14 / no_proper_noun 10 / emotional_metaphor 10 / near_miss 12 /
 no_hit 13 / negation 6 / conflict_new_old 8 / sealed_probe 8 / retired_probe 3 /
-rule_probe 2 / body_detail 6 / excluded 4 / cross_lingual 22 / edge_case 8
+rule_probe 2 / body_detail 6 / excluded 4 / cross_lingual 22 / edge_case 8 /
+deep_band_probe 2
 
-**body_detail vs 衰退带 deep(Q-013 澄清):** `body_detail`(原名 deep,v1.0.1 更名)
-测"答案细节只在正文深处"的正向召回。§12 的衰退带 deep 排除是另一件事,现有数据里
-band=deep 的四条全部与 retired/superseded 重叠,无法独立验证——待 demo_074 数据修订
-(见问答板 A-013)后补 `deep_band_probe` 类别,v1.1 落地。
+**body_detail vs deep_band_probe(Q-013/A-014 澄清):** `body_detail`(原名 deep,
+v1.0.1 更名)测"答案细节只在正文深处"的正向召回。`deep_band_probe`(v1.1.0 新增)测
+§12 的衰退带排除:demo_074 经 A-014 修订后是全库唯一 active/未封存/非 rule、
+仅因 band=deep 而不可召回的样本,两条 leakage_only 探针用正向措辞钓它,
+它出现在 top-k 即证明衰退过滤失效。validator 断言探针目标必须满足这四个条件。
 
 ## 硬指标映射(§12)
 
@@ -61,6 +63,9 @@ node eval/run-eval.js score --split test --threshold <TRAIN_THRESHOLD> --input e
 
 ## 变更记录
 
+- **v1.1.0**(A-014):新增 `deep_band_probe` 2 条(q127 train / q128 test,均 zh、
+  leakage_only、forbidden=demo_074);validator 新增该类别断言 + 配额刷新至 128 条
+  (zh 55,train 48 / test 39)。v1.0.1 的 126 条原始采集结果不受影响,只需增量采集
 - **v1.0.1**(Q-013 三点全收):q093 改 `leakage_only`(排除唯一强匹配后,空结果或弱
   邻居均可接受,只有 demo_003 出现算失败);`deep` 更名 `body_detail`;全量补
   `query_language` 字段;validator 加硬断言(精确配额、`retrieval`+空 expected 仅限

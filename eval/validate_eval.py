@@ -98,6 +98,18 @@ for q in queries:
     # group=cross 与 category=cross_lingual 互为充要
     if (q["group"] == "cross") != (q["category"] == "cross_lingual"):
         errors.append(f"{qid}: group/category cross mismatch")
+    # deep_band_probe:必须 leakage_only,且 forbidden 目标是
+    # active / 未封存 / 非 rule / band=deep 的"纯衰退带排除"样本(A-014)
+    if q["category"] == "deep_band_probe":
+        if q["scored"] != "leakage_only":
+            errors.append(f"{qid}: deep_band_probe must be leakage_only")
+        if not q.get("forbidden"):
+            errors.append(f"{qid}: deep_band_probe without forbidden ids")
+        for ref in q.get("forbidden", []):
+            t = by_id.get(ref, {})
+            if not (t.get("status") == "active" and not t.get("sealed")
+                    and t.get("type") != "rule" and t.get("expected_band") == "deep"):
+                errors.append(f"{qid}: forbidden {ref} is not an active/unsealed/non-rule band=deep entry")
 
 # ---- Q-013 第 3 点:v1 精确配额断言 ----
 cats = Counter(q["category"] for q in queries)
@@ -109,10 +121,10 @@ EXPECTED_CATS = {
     "paraphrase": 14, "no_proper_noun": 10, "emotional_metaphor": 10,
     "near_miss": 12, "no_hit": 13, "negation": 6, "conflict_new_old": 8,
     "sealed_probe": 8, "retired_probe": 3, "rule_probe": 2, "body_detail": 6,
-    "excluded": 4, "cross_lingual": 22, "edge_case": 8,
+    "excluded": 4, "cross_lingual": 22, "edge_case": 8, "deep_band_probe": 2,
 }
-EXPECTED_GROUPS = {"en": 51, "zh": 53, "cross": 22}
-EXPECTED_SPLITS = {"train": 47, "val": 41, "test": 38}
+EXPECTED_GROUPS = {"en": 51, "zh": 55, "cross": 22}
+EXPECTED_SPLITS = {"train": 48, "val": 41, "test": 39}
 
 if dict(cats) != EXPECTED_CATS:
     errors.append(f"category quota mismatch: {dict(sorted(cats.items()))} != {dict(sorted(EXPECTED_CATS.items()))}")
