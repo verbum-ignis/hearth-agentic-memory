@@ -39,6 +39,12 @@ active entries of type `event`, `project`, `letter`, or `stream`.
 | Failed | 0 |
 | Ready coverage | 98.33% |
 
+The 76-row operational snapshot consists of the frozen 75-entry fictional
+dataset (`demo_001` through `demo_075`) plus one session-scoped event created
+through the browser demo. That live demo write is the single eligible row still
+shown as `pending`; it is not part of HearthEval and does not change the public
+seed dataset.
+
 Integrity checks returned zero ready rows without a vector, zero non-ready rows
 with a vector, and zero ineligible rows marked ready.
 
@@ -74,7 +80,7 @@ not perform writes, query-plan execution tests, or memory-content inspection.
 
 ## Assessment and demo use
 
-The cluster had one pending eligible embedding, no failed embeddings, and no
+The cluster had one pending session write, no failed embeddings, and no
 embedding-integrity anomalies. The absence of touches and overlays records the
 pre-interaction state rather than a database fault.
 
