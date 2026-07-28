@@ -75,10 +75,51 @@ for q in queries:
     if q["scored"] not in ("retrieval", "leakage_only"):
         errors.append(f"{qid}: unknown scored mode {q['scored']}")
 
+# ---- Q-013 第 3 点:模式约束与语言校验(逐条) ----
+for q in queries:
+    qid = q["id"]
+    ql = q.get("query_language")
+    if ql not in ("en", "zh"):
+        errors.append(f"{qid}: query_language missing or invalid ({ql})")
+        continue
+    # scored=retrieval 且 expected 为空,只允许出现在 no_hit
+    if q["scored"] == "retrieval" and not q["expected"] and q["category"] != "no_hit":
+        errors.append(f"{qid}: retrieval with empty expected outside no_hit category")
+    # leakage_only 不参与命中率,expected 必须为空
+    if q["scored"] == "leakage_only" and q["expected"]:
+        errors.append(f"{qid}: leakage_only must have empty expected")
+    # en/zh 组的查询语言必须与组一致;cross 组目标语言必须与查询语言相异
+    if q["group"] in ("en", "zh") and ql != q["group"]:
+        errors.append(f"{qid}: group={q['group']} but query_language={ql}")
+    if q["group"] == "cross":
+        for ref in q["expected"]:
+            if by_id[ref].get("language") == ql:
+                errors.append(f"{qid}: cross query ({ql}) targets same-language entry {ref}")
+    # group=cross 与 category=cross_lingual 互为充要
+    if (q["group"] == "cross") != (q["category"] == "cross_lingual"):
+        errors.append(f"{qid}: group/category cross mismatch")
+
+# ---- Q-013 第 3 点:v1 精确配额断言 ----
 cats = Counter(q["category"] for q in queries)
 groups = Counter(q["group"] for q in queries)
 splits = Counter(q["split"] for q in queries)
 nohit = sum(1 for q in queries if q["scored"] == "retrieval" and not q["expected"] and q["category"] == "no_hit")
+
+EXPECTED_CATS = {
+    "paraphrase": 14, "no_proper_noun": 10, "emotional_metaphor": 10,
+    "near_miss": 12, "no_hit": 13, "negation": 6, "conflict_new_old": 8,
+    "sealed_probe": 8, "retired_probe": 3, "rule_probe": 2, "body_detail": 6,
+    "excluded": 4, "cross_lingual": 22, "edge_case": 8,
+}
+EXPECTED_GROUPS = {"en": 51, "zh": 53, "cross": 22}
+EXPECTED_SPLITS = {"train": 47, "val": 41, "test": 38}
+
+if dict(cats) != EXPECTED_CATS:
+    errors.append(f"category quota mismatch: {dict(sorted(cats.items()))} != {dict(sorted(EXPECTED_CATS.items()))}")
+if dict(groups) != EXPECTED_GROUPS:
+    errors.append(f"group quota mismatch: {dict(groups)}")
+if dict(splits) != EXPECTED_SPLITS:
+    errors.append(f"split quota mismatch: {dict(splits)}")
 
 print(f"total queries: {len(queries)}")
 print("categories:", dict(sorted(cats.items())))

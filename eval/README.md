@@ -25,7 +25,12 @@
 
 paraphrase 14 / no_proper_noun 10 / emotional_metaphor 10 / near_miss 12 /
 no_hit 13 / negation 6 / conflict_new_old 8 / sealed_probe 8 / retired_probe 3 /
-rule_probe 2 / deep 6 / excluded 4 / cross_lingual 22 / edge_case 8
+rule_probe 2 / body_detail 6 / excluded 4 / cross_lingual 22 / edge_case 8
+
+**body_detail vs 衰退带 deep(Q-013 澄清):** `body_detail`(原名 deep,v1.0.1 更名)
+测"答案细节只在正文深处"的正向召回。§12 的衰退带 deep 排除是另一件事,现有数据里
+band=deep 的四条全部与 retired/superseded 重叠,无法独立验证——待 demo_074 数据修订
+(见问答板 A-013)后补 `deep_band_probe` 类别,v1.1 落地。
 
 ## 硬指标映射(§12)
 
@@ -38,6 +43,14 @@ rule_probe 2 / deep 6 / excluded 4 / cross_lingual 22 / edge_case 8
 
 Hit@3 ≥ 0.75、No-hit ≥ 0.90、P95 < 800ms(目标 500ms)。
 Day 3 跨语言裁决:cross 组 Hit@3 ≥ 0.50 保留 / < 0.50 撤场景仍如实报告。
+
+## 变更记录
+
+- **v1.0.1**(Q-013 三点全收):q093 改 `leakage_only`(排除唯一强匹配后,空结果或弱
+  邻居均可接受,只有 demo_003 出现算失败);`deep` 更名 `body_detail`;全量补
+  `query_language` 字段;validator 加硬断言(精确配额、`retrieval`+空 expected 仅限
+  no_hit、`leakage_only` 必须空 expected、en/zh 组语言一致、cross 组目标语言相异)
+- **v1.0.0**:首发,126 条
 
 ## 标注决策记录
 
