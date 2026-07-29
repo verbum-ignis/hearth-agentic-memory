@@ -32,3 +32,17 @@ the choice ledger in one CockroachDB transaction.
 
 No private Hearth data, credentials, authorization URLs, or memory bodies are
 included in this evidence file.
+
+## Session constellation transition
+
+The post-deployment constellation smoke used `demo_002`, whose immutable
+baseline was intentionally old enough to be `half_sunk`.
+
+| State | Baseline band | Effective band | Touched in session | Stored scope |
+|---|---|---|---|---|
+| Before open | `half_sunk` | `half_sunk` | `false` | `demo` |
+| After open | `half_sunk` | `active` | `true` | `demo` |
+
+The selected body and touch both referenced `demo_002`. The effective star moved
+closer only through the session overlay; the source entry remained in the
+immutable demo scope.
