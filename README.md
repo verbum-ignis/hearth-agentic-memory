@@ -45,6 +45,9 @@ never reads the archive on the agent's behalf.
 - decay, anchors, sealed records, supersession, and per-session state overlays;
 - asynchronous embedding jobs with leases, retries, and stale-write protection;
 - opaque server sessions, atomic quotas, query caching, and graceful degradation;
+- immutable surfacing runs with server-verified open/skip choices, body delivery
+  only for selected IDs, idempotent choice replay, per-session touch overlays,
+  and an auditable choice ledger;
 - HearthEval v1.1: 128 queries, 15 categories, train-only threshold calibration.
   Test results: Hit@3 **0.903**, No-hit accuracy **1.000**, forbidden hits **0**,
   sealed leakage **0**, cross-language recall **7/7**, P95 latency **492 ms**;
@@ -85,6 +88,13 @@ Open `http://localhost:3000`. The zero-key fixture path proves orchestration,
 keys recall, save flow, and UI behavior; it is deliberately not described as
 semantic retrieval. The evaluated cloud path uses Jina `jina-embeddings-v3`
 with separate passage/query tasks and a frozen threshold.
+
+The agent choice boundary is exposed as two calls in the same opaque browser
+session. `POST /surface` returns hooks plus a `run_id` and `idempotency_key`.
+`POST /agent/runs/:run_id/choice` accepts that key and a `selected_ids` subset.
+Only IDs from the immutable candidate snapshot can be opened; the response
+delivers only their bodies, records all unselected candidates as skipped, and
+touches only the opened memories. Replaying the same choice is idempotent.
 
 The default local URL is
 `postgresql://root@localhost:26257/hearth?sslmode=disable`. Copy `.env.example`

@@ -22,6 +22,7 @@ function fakeApp() {
       candidates: [{ id: session.scope_id, hook: 'A safe hook', score: 0.99, type: 'event', language: 'en' }],
     }),
     surface: async () => ({ memories: [], run_id: 'run-1', semantic_status: 'ready' }),
+    choose: async (_session, runId, input) => ({ run_id: runId, selected_ids: input.selectedIds }),
     demo: { save: async () => ({}), status: async () => ({}), constellation: async () => [] },
     logger: { error() {} },
   });
@@ -67,6 +68,18 @@ test('/recall uses server session scope and never exposes score or body', async 
     assert.equal('score' in payload.memories[0], false);
     assert.equal('body' in payload.memories[0], false);
     assert.equal(response.headers.get('cache-control'), 'no-store');
+  });
+});
+
+test('agent choice validates the body before invoking delivery', async () => {
+  await withServer(fakeApp(), async (base) => {
+    const response = await fetch(`${base}/agent/runs/not-a-uuid/choice`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: 'https://demo.example' },
+      body: JSON.stringify({ selected_ids: ['a', 'a'], idempotency_key: 'key' }),
+    });
+    assert.equal(response.status, 400);
+    assert.equal((await response.json()).error.code, 'invalid_selected_ids');
   });
 });
 

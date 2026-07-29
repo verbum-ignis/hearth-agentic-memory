@@ -1,5 +1,6 @@
 import express from 'express';
 import { fileURLToPath } from 'node:url';
+import { validateAgentChoiceInput } from './agent-choice-service.js';
 import { publicError } from './errors.js';
 import { validateMemoryInput } from './demo-service.js';
 import { requestGuards, securityHeaders, validateRecallInput } from './security.js';
@@ -8,12 +9,15 @@ export function createApp({
   resolveSession,
   recall,
   surface,
+  choose,
   demo,
   allowedOrigins = [],
   trustProxy = 1,
   logger = console,
 } = {}) {
-  if (!resolveSession || !recall || !surface || !demo) throw new TypeError('resolveSession, recall, surface and demo are required');
+  if (!resolveSession || !recall || !surface || !choose || !demo) {
+    throw new TypeError('resolveSession, recall, surface, choose and demo are required');
+  }
   const app = express();
   app.set('trust proxy', trustProxy);
   app.disable('x-powered-by');
@@ -49,6 +53,15 @@ export function createApp({
     try {
       const input = validateRecallInput(req.body);
       res.json(await surface(req.hearthSession, input));
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post('/agent/runs/:runId/choice', withSession, async (req, res, next) => {
+    try {
+      const input = validateAgentChoiceInput(req.body);
+      res.json(await choose(req.hearthSession, req.params.runId, input));
     } catch (error) {
       next(error);
     }
