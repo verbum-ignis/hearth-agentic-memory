@@ -67,11 +67,20 @@ async function loadConstellation() {
   const root = $('#constellation'); root.innerHTML = '<p class="empty">Reading the sky…</p>';
   try {
     const payload = await api('/demo/constellation'); root.replaceChildren();
-    const memories = payload.memories.filter((memory) => memory.scope === 'session').slice(-8);
-    if (!memories.length) root.innerHTML = '<p class="empty">Save a memory and its light will appear here.</p>';
+    const memories = payload.memories
+      .filter((memory) => memory.scope === 'session' || memory.touched_in_session)
+      .sort((a, b) => new Date(b.last_accessed) - new Date(a.last_accessed))
+      .slice(0, 8);
+    if (!memories.length) root.innerHTML = '<p class="empty">Open or save a memory and its light will appear here.</p>';
     for (const memory of memories) {
       const star = document.createElement('div'); star.className = `star ${memory.band}`;
-      star.textContent = memory.hook; star.title = `${memory.band} · tier ${memory.tier} · ${memory.embedding_status}`;
+      const hook = document.createElement('span'); hook.className = 'star-hook'; hook.textContent = memory.hook;
+      const state = document.createElement('span'); state.className = 'star-state';
+      state.textContent = memory.scope === 'session'
+        ? `new · ${memory.band}`
+        : `${memory.baseline_band} → ${memory.band}`;
+      star.append(hook, state);
+      star.title = `${memory.baseline_band} → ${memory.band} · tier ${memory.tier} · ${memory.embedding_status}`;
       root.append(star);
     }
   } catch (error) {

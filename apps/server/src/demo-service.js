@@ -58,9 +58,11 @@ export function createDemoService(pool, { writeLimit = Number(process.env.SESSIO
     async constellation(session) {
       const result = await pool.query(`
         SELECT e.id, e.scope_id, e.language, e.type, e.hook, e.status, e.sealed,
+               e.last_accessed AS baseline_last_accessed,
                COALESCE(s.effective_anchor, e.anchor) AS anchor,
                COALESCE(s.effective_tier_since, e.tier_since) AS tier_since,
                COALESCE(s.effective_last_accessed, e.last_accessed) AS last_accessed,
+               s.entry_id IS NOT NULL AS touched_in_session,
                e.embedding_status
         FROM hearth_entries AS e
         LEFT JOIN hearth_session_entry_state AS s
@@ -76,9 +78,11 @@ export function createDemoService(pool, { writeLimit = Number(process.env.SESSIO
         type: row.type,
         tier: Number(row.anchor),
         band: bandForEntry(row, asOf),
+        baseline_band: bandForEntry({ ...row, last_accessed: row.baseline_last_accessed }, asOf),
         last_accessed: row.last_accessed,
         embedding_status: row.embedding_status,
         scope: row.scope_id === session.scope_id ? 'session' : 'demo',
+        touched_in_session: Boolean(row.touched_in_session),
       }));
     },
   };
